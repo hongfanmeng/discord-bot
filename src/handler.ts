@@ -28,10 +28,10 @@ router.post("/", async (request, env) => {
 		// Most user commands will come as `ApplicationCommand`.
 		switch (message.data.name.toLowerCase()) {
 			case AWW_COMMAND.name.toLowerCase(): {
-				return AWW_COMMAND.handler(request);
+				return AWW_COMMAND.handler(request, env);
 			}
 			case INVITE_COMMAND.name.toLowerCase(): {
-				return INVITE_COMMAND.handler(request);
+				return INVITE_COMMAND.handler(request, env);
 			}
 			default:
 				console.error("Unknown Command");
