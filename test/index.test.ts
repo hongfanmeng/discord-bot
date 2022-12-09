@@ -8,7 +8,4 @@ test("GET /", async () => {
 		{} as any
 	);
 	expect(result.status).toBe(200);
-
-	const text = await result.text();
-	expect(text).toBe("Hello World from GET!");
 });
