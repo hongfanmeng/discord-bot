@@ -4,7 +4,8 @@ workers_dev = true
 compatibility_date = "2022-07-26"
 account_id = "dff09c6e649aae3531242fba9f44c8b2"
 
-# [secrets]
+[vars]
+DEBUG="TRUE"
 # DISCORD_TOKEN
 # DISCORD_PUBLIC_KEY
 # DISCORD_APPLICATION_ID

@@ -4,7 +4,9 @@ import {
 } from "discord-api-types/v10";
 import { Router } from "itty-router";
 import { AWW_COMMAND, INVITE_COMMAND } from "./commands";
+import { registerGlobalCommands } from "./register";
 import { JsonResponse } from "./utils";
+import { Env } from "./utils/env";
 
 const router = Router();
 
@@ -39,6 +41,14 @@ router.post("/", async (request, env) => {
 
 	console.error("Unknown Type");
 	return JsonResponse({ error: "Unknown Type" }, { status: 400 });
+});
+
+router.get("/register", async (request: Request, env: Env) => {
+	if (env.DEBUG?.toLowerCase() == "true") {
+		await registerGlobalCommands(env);
+		return JsonResponse({ details: "success" });
+	}
+	return JsonResponse({ details: "fail" });
 });
 
 router.all("*", () => new Response("Not Found.", { status: 404 }));

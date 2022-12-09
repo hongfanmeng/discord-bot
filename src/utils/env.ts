@@ -4,4 +4,5 @@ export interface Env {
 	DISCORD_TOKEN: string;
 	DISCORD_APPLICATION_ID: string;
 	DISCORD_TEST_GUILD_ID: string;
+	DEBUG: string | undefined;
 }

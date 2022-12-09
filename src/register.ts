@@ -25,7 +25,6 @@ export async function registerGuildCommands(env: Env) {
 		env.DISCORD_TOKEN
 	);
 	const data = (await res.json()) as RESTPutAPIApplicationGuildCommandsResult;
-	console.log(data);
 	data.forEach(async (cmd) => {
 		const response = await fetch(
 			`${RouteBases.api}${Routes.applicationGuildCommand(
