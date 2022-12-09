@@ -1,21 +1,28 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Env {
-	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
-	// MY_KV_NAMESPACE: KVNamespace
-	//
-	// Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
-	// MY_DURABLE_OBJECT: DurableObjectNamespace
-	//
-	// Example binding to R2. Learn more at https://developers.cloudflare.com/workers/runtime-apis/r2/
-	// MY_BUCKET: R2Bucket
-}
+import { Env } from "./utils/env";
+import router from "./router";
+import { verify } from "./utils";
+import { registerGlobalCommands } from "./register";
 
-export const worker = {
+const worker = {
 	async fetch(
 		request: Request,
 		env: Env,
 		ctx: ExecutionContext
 	): Promise<Response> {
-		return new Response(`Hello World from ${request.method}!`);
+		// Using the incoming headers, verify this request actually came from discord.
+		const signature = request.headers.get("x-signature-ed25519");
+		const timestamp = request.headers.get("x-signature-timestamp");
+		console.log(signature, timestamp, env.DISCORD_PUBLIC_KEY);
+		if (!signature || !timestamp || !(await verify(request, env))) {
+			console.error("Invalid Request");
+			return new Response("Bad request signature.", { status: 401 });
+		}
+		// Dispatch the request to the appropriate route
+		return router.handle(request, env);
+	},
+	async scheduled(event: Event, env: Env, ctx: ExecutionContext) {
+		ctx.waitUntil(registerGlobalCommands(env));
 	},
 };
+
+export default worker;

@@ -8,4 +8,5 @@ const JsonResponse = (body: unknown, init?: ResponseInit) => {
 	return new Response(jsonBody, init);
 };
 
-export { JsonResponse };
+import { verify } from "./verify";
+export { JsonResponse, verify };

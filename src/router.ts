@@ -1,8 +1,6 @@
 import {
 	InteractionResponseType,
 	InteractionType,
-	RouteBases,
-	Routes,
 } from "discord-api-types/v10";
 import { Router } from "itty-router";
 import { AWW_COMMAND, INVITE_COMMAND } from "./commands";
@@ -45,4 +43,4 @@ router.post("/", async (request, env) => {
 
 router.all("*", () => new Response("Not Found.", { status: 404 }));
 
-export const handleRequest = (request: Request) => router.handle(request);
+export default router;
