@@ -28,26 +28,10 @@ router.post("/", async (request, env) => {
 		// Most user commands will come as `ApplicationCommand`.
 		switch (message.data.name.toLowerCase()) {
 			case AWW_COMMAND.name.toLowerCase(): {
-				console.log("handling cute request");
-				return JsonResponse({
-					type: 4,
-					data: {
-						content: "aww",
-					},
-				});
+				return AWW_COMMAND.handler(request);
 			}
 			case INVITE_COMMAND.name.toLowerCase(): {
-				const applicationId = env.DISCORD_APPLICATION_ID as string;
-				const INVITE_URL =
-					`${RouteBases.api}${Routes.oauth2Authorization()}?` +
-					`client_id=${applicationId}&scope=applications.commands`;
-				return JsonResponse({
-					type: 4,
-					data: {
-						content: INVITE_URL,
-						flags: 64,
-					},
-				});
+				return INVITE_COMMAND.handler(request);
 			}
 			default:
 				console.error("Unknown Command");
